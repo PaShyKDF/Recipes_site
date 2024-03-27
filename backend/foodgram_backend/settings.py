@@ -160,4 +160,4 @@ AUTH_USER_MODEL = 'user.User'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CSRF_TRUSTED_ORIGINS = ['yapract-foodgram.hopto.org']
+CSRF_TRUSTED_ORIGINS = ['https://yapract-foodgram.hopto.org']
