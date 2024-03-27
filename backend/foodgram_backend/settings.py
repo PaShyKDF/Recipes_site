@@ -17,7 +17,7 @@ SECRET_KEY = str(os.getenv('DJANGO_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ['51.250.109.147', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['yapract-foodgram.hopto.org', '51.250.109.147', '127.0.0.1', 'localhost']
 
 
 # Application definition
