@@ -18,6 +18,7 @@ SECRET_KEY = str(os.getenv('DJANGO_KEY'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 ALLOWED_HOSTS = ['yapract-foodgram.hopto.org', '51.250.109.147', '127.0.0.1', 'localhost']
+CSRF_TRUSTED_ORIGINS = ['https://yapract-foodgram.hopto.org']
 
 
 # Application definition
@@ -159,5 +160,3 @@ AUTH_USER_MODEL = 'user.User'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-CSRF_TRUSTED_ORIGINS = ['https://yapract-foodgram.hopto.org']
