@@ -1,18 +1,10 @@
 import base64
 
 from django.core.files.base import ContentFile
-from rest_framework import serializers
 from djoser.serializers import UserCreateSerializer
-
-from recipe.models import (
-    Ingredient,
-    IngredientAmount,
-    Recipe,
-    ShoppingCart,
-    Tag,
-    User,
-    Favorited,
-)
+from recipe.models import (Favorited, Ingredient, IngredientAmount, Recipe,
+                           ShoppingCart, Tag, User)
+from rest_framework import serializers
 
 
 class Base64ImageField(serializers.ImageField):
@@ -128,8 +120,8 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Отсутствуют теги')
         if len(value) != len(set(value)):
             raise serializers.ValidationError(
-                    'Теги должны быть уникальными'
-                )
+                'Теги должны быть уникальными'
+            )
         return value
 
     def validate_ingredients(self, value):
@@ -171,7 +163,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         instance.text = validated_data.get('text', instance.text)
         instance.cooking_time = validated_data.get(
             'cooking_time', instance.cooking_time
-            )
+        )
         instance.image = validated_data.get('image', instance.image)
 
         tags = validated_data.pop('tags', [])

@@ -1,34 +1,22 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from django.core.exceptions import ObjectDoesNotExist
-from rest_framework import viewsets, permissions, status, pagination
-from rest_framework.decorators import action
-from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
-
-from .renders import TXTShoppingCartDataRenderer
-from .serializers import (
-    IngredientSerializer,
-    RecipeShortSerializer,
-    TagSerializer,
-    RecipeGetSerializer,
-    RecipeCreateSerializer,
-    SubscriptionsSerializer,
-    IngredientAmountSerializer,
-)
-from recipe.models import (
-    Favorited,
-    Ingredient,
-    IngredientAmount,
-    ShoppingCart,
-    Tag,
-    Recipe,
-    User,
-)
-from .permissinos import IsAuthorOrReadOnly
-from .pagination import PageNumberPagination
+from recipe.models import (Favorited, Ingredient, IngredientAmount, Recipe,
+                           ShoppingCart, Tag, User)
+from rest_framework import pagination, permissions, status, viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from user.models import Subscription
+
+from .pagination import PageNumberPagination
+from .permissinos import IsAuthorOrReadOnly
+from .renders import TXTShoppingCartDataRenderer
+from .serializers import (IngredientAmountSerializer, IngredientSerializer,
+                          RecipeCreateSerializer, RecipeGetSerializer,
+                          RecipeShortSerializer, SubscriptionsSerializer,
+                          TagSerializer)
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):

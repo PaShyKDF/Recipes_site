@@ -2,12 +2,7 @@ from django.contrib import admin
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
-from .models import (
-    Ingredient,
-    Recipe,
-    IngredientAmount,
-    Tag,
-    Favorited)
+from .models import Favorited, Ingredient, IngredientAmount, Recipe, Tag
 
 
 class TagAdmin(admin.ModelAdmin):
