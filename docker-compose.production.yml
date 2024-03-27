@@ -30,7 +30,7 @@ services:
   nginx:
     image: pashykdf/foodgram_gateway
     ports:
-      - "80:80"
+      - "8080:80"
     volumes:
       - static:/staticfiles/
       - media:/media:ro
@@ -39,3 +39,4 @@ services:
     depends_on:
       - backend
       - frontend
+# some
