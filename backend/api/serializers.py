@@ -69,7 +69,7 @@ class RecipeGetSerializer(serializers.ModelSerializer):
     author = UserGetSerializer(read_only=True,)
     ingredients = IngredientAmountSerializer(read_only=True,
                                              many=True,
-                                             source='ingridient_recipe')
+                                             source='ingredient_recipe')
     is_favorited = serializers.SerializerMethodField()
     is_in_shopping_cart = serializers.SerializerMethodField()
 
@@ -103,7 +103,7 @@ class IngredientAmountCreateSerializer(serializers.ModelSerializer):
 
 class RecipeCreateSerializer(serializers.ModelSerializer):
     ingredients = IngredientAmountCreateSerializer(many=True,
-                                                   source='ingridient_recipe',
+                                                   source='ingredient_recipe',
                                                    required=True)
     tags = serializers.PrimaryKeyRelatedField(many=True,
                                               queryset=Tag.objects.all())
@@ -140,14 +140,14 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         return value
 
     def create(self, validated_data):
-        ingridient_recipe = validated_data.pop('ingridient_recipe')
+        ingredient_recipe = validated_data.pop('ingredient_recipe')
         tags = validated_data.pop('tags', None)
 
         recipe = Recipe.objects.create(**validated_data)
         recipe.tags.set(tags)
 
-        if ingridient_recipe:
-            for ingredient in ingridient_recipe:
+        if ingredient_recipe:
+            for ingredient in ingredient_recipe:
                 ingredient_id = ingredient['ingredient']['id']
                 ingredient_amount = ingredient['amount']
                 current_ingredient = Ingredient.objects.get(id=ingredient_id)
@@ -179,7 +179,7 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 'Должен быть хотя бы один ингредиент'
             )
-        instance.ingridient_recipe.all().delete()
+        instance.ingredient_recipe.all().delete()
 
         for ingredient in ingredient_recipe:
             ingredient_id = ingredient['ingredient']['id']

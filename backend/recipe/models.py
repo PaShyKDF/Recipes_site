@@ -86,7 +86,7 @@ class IngredientAmount(models.Model):
         ])
 
     class Meta:
-        default_related_name = 'ingridient_recipe'
+        default_related_name = 'ingredient_recipe'
         verbose_name = 'ингредиент'
         verbose_name_plural = 'Ингредиенты'
         constraints = (
