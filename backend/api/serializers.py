@@ -174,14 +174,14 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
 
         instance.tags.set(tags)
 
-        ingridient_recipe = validated_data.pop('ingridient_recipe', [])
-        if not ingridient_recipe:
+        ingredient_recipe = validated_data.pop('ingredient_recipe', [])
+        if not ingredient_recipe:
             raise serializers.ValidationError(
                 'Должен быть хотя бы один ингредиент'
             )
         instance.ingridient_recipe.all().delete()
 
-        for ingredient in ingridient_recipe:
+        for ingredient in ingredient_recipe:
             ingredient_id = ingredient['ingredient']['id']
             ingredient_amount = ingredient['amount']
             current_ingredient = Ingredient.objects.get(id=ingredient_id)
