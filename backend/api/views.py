@@ -3,8 +3,6 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
-from recipe.models import (Favorited, Ingredient, IngredientAmount, Recipe,
-                           ShoppingCart, Tag, User)
 from rest_framework import pagination, permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -17,6 +15,8 @@ from .serializers import (IngredientAmountSerializer, IngredientSerializer,
                           RecipeCreateSerializer, RecipeGetSerializer,
                           RecipeShortSerializer, SubscriptionsSerializer,
                           TagSerializer)
+from recipe.models import (Favorited, Ingredient, IngredientAmount, Recipe,
+                           ShoppingCart, Tag, User)
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
@@ -55,8 +55,7 @@ class UserViewSet(UserViewSet):
     def subscribe(self, request, id):
         user = request.user
         subscriber = get_object_or_404(User, pk=id)
-        subscription = Subscription.objects.filter(user=user,
-                                                   subscriber=subscriber)
+        subscription = user.user_subscriptions.filter(subscriber=subscriber)
 
         if (request.method == 'POST' and user != subscriber
            and not subscription.exists()):
@@ -119,7 +118,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         user = request.user
-        favorite_recipe = Favorited.objects.filter(user=user, recipe=recipe)
+        favorite_recipe = user.is_favorited.filter(recipe=recipe)
 
         if request.method == 'POST' and not favorite_recipe.exists():
             Favorited.objects.create(user=user, recipe=recipe)
@@ -143,7 +142,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         user = request.user
-        favorite_recipe = ShoppingCart.objects.filter(user=user, recipe=recipe)
+        favorite_recipe = user.is_in_shopping_cart.filter(recipe=recipe)
 
         if request.method == 'POST' and not favorite_recipe.exists():
             ShoppingCart.objects.create(user=user, recipe=recipe)
