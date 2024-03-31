@@ -164,21 +164,11 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         recipe = Recipe.objects.create(**validated_data)
         recipe.tags.set(tags)
 
-        # ingrediens_amount = []
         if ingredient_recipe:
             self.create_update_ingredients_amount(
                 ingredient_recipe=ingredient_recipe,
                 recipe=recipe
             )
-            # for ingredient in ingredient_recipe:
-            #     ingredient_id = ingredient['ingredient']['id']
-            #     ingredient_amount = ingredient['amount']
-            #     current_ingredient = Ingredient.objects.get(id=ingredient_id)
-            #     ingrediens_amount.append(IngredientAmount(
-            #         ingredient=current_ingredient,
-            #         recipe=recipe,
-            #         amount=ingredient_amount))
-            # IngredientAmount.objects.bulk_create(ingrediens_amount)
             return recipe
         return False
 
@@ -209,17 +199,6 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
             ingredient_recipe=ingredient_recipe,
             recipe=instance
         )
-
-        # ingredients_amount = []
-        # for ingredient in ingredient_recipe:
-        #     ingredient_id = ingredient['ingredient']['id']
-        #     ingredient_amount = ingredient['amount']
-        #     current_ingredient = Ingredient.objects.get(id=ingredient_id)
-        #     ingredients_amount.append(IngredientAmount(
-        #         ingredient=current_ingredient,
-        #         recipe=instance,
-        #         amount=ingredient_amount))
-        # IngredientAmount.objects.bulk_create(ingredients_amount)
         instance.save()
         return instance
 
