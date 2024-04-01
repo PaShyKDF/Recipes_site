@@ -146,16 +146,15 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
 
     def create_update_ingredients_amount(self, ingredient_recipe, recipe):
         ingrediens_amount = []
-        if ingredient_recipe:
-            for ingredient in ingredient_recipe:
-                ingredient_id = ingredient['ingredient']['id']
-                ingredient_amount = ingredient['amount']
-                current_ingredient = Ingredient.objects.get(id=ingredient_id)
-                ingrediens_amount.append(IngredientAmount(
-                    ingredient=current_ingredient,
-                    recipe=recipe,
-                    amount=ingredient_amount))
-            IngredientAmount.objects.bulk_create(ingrediens_amount)
+        for ingredient in ingredient_recipe:
+            ingredient_id = ingredient['ingredient']['id']
+            ingredient_amount = ingredient['amount']
+            current_ingredient = Ingredient.objects.get(id=ingredient_id)
+            ingrediens_amount.append(IngredientAmount(
+                ingredient=current_ingredient,
+                recipe=recipe,
+                amount=ingredient_amount))
+        IngredientAmount.objects.bulk_create(ingrediens_amount)
 
     def create(self, validated_data):
         ingredient_recipe = validated_data.pop('ingredient_recipe')
@@ -164,13 +163,11 @@ class RecipeCreateSerializer(serializers.ModelSerializer):
         recipe = Recipe.objects.create(**validated_data)
         recipe.tags.set(tags)
 
-        if ingredient_recipe:
-            self.create_update_ingredients_amount(
-                ingredient_recipe=ingredient_recipe,
-                recipe=recipe
-            )
-            return recipe
-        return False
+        self.create_update_ingredients_amount(
+            ingredient_recipe=ingredient_recipe,
+            recipe=recipe
+        )
+        return recipe
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)
@@ -234,6 +231,7 @@ class SubscriptionsSerializer(UserGetSerializer):
         if request.user.is_anonymous:
             return False
         recipes = Recipe.objects.filter(author=obj)
+        recipes = obj.recipes.all()
         if limit:
             recipes = recipes[:int(limit)]
         return RecipeShortSerializer(recipes, many=True).data
