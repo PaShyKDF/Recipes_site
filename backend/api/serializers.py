@@ -230,7 +230,6 @@ class SubscriptionsSerializer(UserGetSerializer):
 
         if request.user.is_anonymous:
             return False
-        recipes = Recipe.objects.filter(author=obj)
         recipes = obj.recipes.all()
         if limit:
             recipes = recipes[:int(limit)]
