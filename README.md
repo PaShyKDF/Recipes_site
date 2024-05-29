@@ -96,7 +96,7 @@ POST ```https://yapract-foodgram.hopto.org/api/users/```
 ```
 **Получение токена**
 
-POST ```https://yapract-foodgram.hopto.org/api/auth/tocken/login/```
+POST ```https://yapract-foodgram.hopto.org/api/auth/token/login/```
 
 Данные запроса:
 ```json
